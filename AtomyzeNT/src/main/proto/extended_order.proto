@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package atmz.trading.oms.models;
+
+import "cancellation_reason_enum.proto";
+import "order_status_enum.proto";
+import "google/protobuf/timestamp.proto";
+import "order.proto";
+
+// созданная заявка
+message ExtendedOrder {
+  Order order = 1; // заявка
+  string order_id = 2; // id заявки в Атомайзе
+  string rest_qty = 3; // оставшееся кол-во
+  enums.OrderStatus status = 4; // статус заявки
+  optional enums.CancellationReason cancellation_reason = 5; // причина отмены заявки
+  google.protobuf.Timestamp created_at = 6; // время создания
+  google.protobuf.Timestamp updated_at = 7; // время обновления
+  optional google.protobuf.Timestamp max_expired_date = 8; // дата окончания заявки
+  string executed_fee = 9; // Сумма уже исполненных заявок по сделке в рублях * 10^8
+}

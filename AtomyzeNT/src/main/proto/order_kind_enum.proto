@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package atmz.trading.oms.enums;
+
+// вид заявки
+enum OrderKind {
+  ORDER_KIND_UNSPECIFIED = 0;
+  ORDER_KIND_STREAMING = 1; // в стакане
+  //RFQ = 2; // запрос котировок
+  //P2P = 3; // person to person
+}

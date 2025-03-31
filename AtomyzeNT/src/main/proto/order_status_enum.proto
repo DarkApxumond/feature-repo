@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package atmz.trading.oms.enums;
+
+// Статус заявки
+enum OrderStatus {
+  ORDER_STATUS_UNSPECIFIED = 0;
+  ORDER_STATUS_REQUESTED = 1; // Черновик заявки ожидает подписания
+  ORDER_STATUS_SIGNED = 2; // Заявка подписана клиентом
+  ORDER_STATUS_ADDED = 3; // Заявка зарегистрирована, пройдена валидация и холдирование балансов и лимитов
+  ORDER_STATUS_MATCHING_STARTED = 4; // Начался матчинг заявки
+  ORDER_STATUS_MATCHING_STOPPED = 5; // Остановлен матчинг заявки, ожидает финализации сделок по заявке
+  ORDER_STATUS_PARTIALLY_FILLED = 6; // Заявка частично исполнена, есть как минимум одна финализированая сделка
+  ORDER_STATUS_PARTIALLY_CANCELED = 7; // Частично отменена, после финализации всех сделок по заявке (конечный статус)
+  ORDER_STATUS_FILLED = 8; // Заявка исполнена в полном объеме, все сделки по заявке финализированы (конечный статус)
+  ORDER_STATUS_CANCELED = 9; // Отменена - была принята в работу, но отменена (конечный статус)
+  ORDER_STATUS_REJECTED = 10; // Отклонена до подписания - не приняли заявку в работу (конечный статус)
+}

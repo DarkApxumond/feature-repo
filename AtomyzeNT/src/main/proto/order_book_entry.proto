@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package atmz.trading.oms.models;
+
+// Заявка в OrderBook
+message OrderBookEntry {
+  string qty = 1; // кол-во токенов * 10^8
+  string price = 2; // цена за ед * 10^8
+}

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package atmz.trading.oms.common;
+
+message Pagination {
+  optional uint32 size = 1;
+  optional uint32 index = 2;
+  optional uint32 total = 3;
+}
+
+message PaginationRequest {
+  Pagination pagination = 1;
+}

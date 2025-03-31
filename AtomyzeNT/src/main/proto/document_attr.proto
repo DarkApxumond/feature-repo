@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package atmz.trading.oms.models;
+
+// Атрибуты документа для подписания
+message DocumentAttr {
+  string name = 1; // Название атрибута
+  string value = 2; // Значение атрибута
+}

@@ -1,0 +1,131 @@
+syntax = "proto3";
+
+package atmz.trading.oms.services;
+
+import "date_range.proto";
+import "web_pagination.proto";
+import "sign_func_enum.proto";
+import "estimate_order_error_enum.proto";
+import "order_direction_enum.proto";
+import "order_kind_enum.proto";
+import "order_status_enum.proto";
+import "order_time_in_force_enum.proto";
+import "order_type_enum.proto";
+import "document_to_sign.proto";
+import "extended_order.proto";
+import "order.proto";
+import "order_book_entry.proto";
+import "google/protobuf/empty.proto";
+
+service DfaTradingService {
+  // Предрасчитать заявку - получить комиссию
+  rpc EstimateOrder(EstimateOrderRequest) returns (EstimateOrderResponse);
+
+  // Подтвердить заявку - получить заявку и документ для подписания
+  rpc CreateOrderDocument(CreateOrderDocumentRequest) returns (CreateOrderDocumentResponse);
+
+  // Отправить документ подтверждения заявки
+  rpc AddSignedDocument(AddSignedDocumentRequest) returns (AddSignedDocumentResponse);
+
+  // Получить список ордеров
+  rpc GetOrders(GetOrdersRequest) returns (GetOrdersResponse);
+
+  // Получить ордер по id
+  rpc GetOrderById(GetOrderByIdRequest) returns (GetOrderByIdResponse);
+
+  // Отменить торговую заявку
+  rpc CancelOrderByUser(CancelOrderByUserRequest) returns (CancelOrderByUserResponse);
+
+  // Получение стакана заявок - список предложений на покупку/продажу по тикеру ЦФА.
+  rpc GetOrderBook(GetOrderBookRequest) returns (GetOrderBookResponse);
+
+  // Выборка и отмена торговых заявок с истекшим сроком действия. Вызывать только по CRON'у
+  rpc CronJobProcessExpiredOrders(google.protobuf.Empty) returns (google.protobuf.Empty);
+}
+
+message EstimateOrderRequest {
+  string user_id = 1; // Id клиента
+  string ticker = 2; // Тикер
+  enums.OrderDirection direction = 3; // Направление заявки
+  enums.OrderKind kind = 4; // Вид заявки
+  enums.OrderType type = 5; // Тип заявки
+  enums.OrderTimeInForce time_in_force = 6; // Поведение заявки
+  string qty = 7; // Кол-во токенов * 10^8
+  string price = 8; // Цена за ед * 10^8
+  optional string company_id = 9; // Если зявка маркет мейкера id юр лица в Атомайз должен быть маркетмейкером
+}
+
+message EstimateOrderResponse {
+  optional string limit = 1; // Остаток лимита пользователя * 10^8, для квала не передается
+  string fee = 2; // Комиссия * 10^8
+  repeated enums.EstimateOrderError errors = 3; // Список кодов ошибок предварительной валидации баланса и лимита возвращаются, если валидация не пройдена
+}
+
+message CreateOrderDocumentRequest {
+  models.Order order = 1;
+  atomyze.hlf.onchain.token.schema.common.sign.SignFunc sign_func = 2;
+}
+
+message CreateOrderDocumentResponse {
+  // созданная заявка
+  models.ExtendedOrder extended_order = 1;
+  // документ для подписания
+  models.DocumentToSign document_to_sign = 2;
+}
+
+message AddSignedDocumentRequest {
+  // id заявки
+  string order_id = 1;
+  // Сигнатура в bs58
+  string signature = 3;
+  // Публичный ключ в bs58
+  string public_key = 4;
+}
+
+message AddSignedDocumentResponse {
+  string order_id = 1; // id заявки
+  optional string order_partner_id = 2; // id заявки в системе партнёра
+}
+
+message GetOrdersRequest {
+  optional string user_id = 1;
+  repeated enums.OrderStatus statuses = 2;
+  optional common.DateRange created_at = 3;
+  optional common.Pagination pagination = 4;
+  optional string company_id = 5;
+}
+
+message GetOrdersResponse {
+  repeated models.ExtendedOrder orders = 1;
+  common.Pagination pagination = 2;
+}
+
+message GetOrderByIdRequest {
+  string id = 1;
+}
+
+message GetOrderByIdResponse {
+  models.ExtendedOrder extended_order = 1;
+}
+
+message CancelOrderByUserRequest {
+  string id = 1;
+  string user_id = 2;
+  optional string company_id = 3;
+}
+
+message CancelOrderByUserResponse {
+  models.ExtendedOrder extended_order = 1;
+}
+
+message GetOrderBookRequest {
+  // Тикер, по которому требуется получить заявки
+  string ticker = 1;
+}
+
+message GetOrderBookResponse {
+  // Заявки на продажу (ask — спрос)
+  repeated models.OrderBookEntry ask = 1;
+  // Заявки на покупку (bid — предложение)
+  repeated models.OrderBookEntry bid = 2;
+}

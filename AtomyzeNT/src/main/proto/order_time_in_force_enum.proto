@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package atmz.trading.oms.enums;
+
+// Поведение заявки
+enum OrderTimeInForce {
+  ORDER_TIME_IN_FORCE_UNSPECIFIED = 0;
+  ORDER_TIME_IN_FORCE_FOK = 1; // fill or kill (для ФЛ)
+  ORDER_TIME_IN_FORCE_GTC = 2; // good till cancel
+  ORDER_TIME_IN_FORCE_DAY = 3; // день или сессия (для Маркетмейкера)
+  ORDER_TIME_IN_FORCE_IOC = 4; // immediate or cancel
+}

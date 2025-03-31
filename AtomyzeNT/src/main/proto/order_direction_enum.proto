@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package atmz.trading.oms.enums;
+
+// Направление заявки
+enum OrderDirection {
+  ORDER_DIRECTION_UNSPECIFIED = 0;
+  ORDER_DIRECTION_BUY = 1;
+  ORDER_DIRECTION_SELL = 2;
+}

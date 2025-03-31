@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package atmz.trading.oms.models;
+
+import "document_attr.proto";
+
+// Документ для подписания
+message DocumentToSign {
+  string hash = 1; // хэш документа
+  string hash_func = 2; // Функция хэширования
+  repeated DocumentAttr attrs = 3; // Атрибуты документа для подписания (аргументы, передаваемые в транзакцию в леджере)
+}

@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package atmz.trading.oms.models;
+
+import "order_direction_enum.proto";
+import "order_kind_enum.proto";
+import "order_time_in_force_enum.proto";
+import "order_type_enum.proto";
+
+// заявка
+message Order {
+  string user_id = 1; // id клиента в Атомайзе
+  optional string order_partner_id = 2; // id заявки в системе партнёра
+  string ticker = 3; // тикер
+  enums.OrderDirection direction = 4; // направление заявки
+  enums.OrderKind kind = 5; // вид заявки
+  enums.OrderType type = 6; // тип заявки
+  enums.OrderTimeInForce time_in_force = 7; // поведение заявки
+  string qty = 8; // кол-во токенов * 10^8
+  string price = 9; // цена за ед * 10^8
+  string fee = 10; // комиссия * 10^8
+  optional string company_id = 11; // id юр лица в Атомайз должен быть маркетмейкером
+}

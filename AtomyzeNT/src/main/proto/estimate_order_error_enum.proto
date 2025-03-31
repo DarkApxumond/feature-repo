@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package atmz.trading.oms.enums;
+
+// Ошибки, которые прогнозирует метод EstimateOrder. Для поля errors успешного ответа
+enum EstimateOrderError {
+  ESTIMATE_ORDER_ERROR_UNSPECIFIED = 0;
+  // Превышен имеющийся лимит клиента для операций
+  ESTIMATE_ORDER_ERROR_LIMIT_EXCEEDED = 1;
+  // Недостаточно денежных средств на балансе (для заявок на покупку ЦФА)
+  ESTIMATE_ORDER_ERROR_INSUFFICIENT_FIAT = 2;
+  // Недостаточно токенов на балансе (для заявок на продажу ЦФА)
+  ESTIMATE_ORDER_ERROR_INSUFFICIENT_TOKEN = 3;
+  // Торговля по выпуску не разрешена
+  ESTIMATE_ORDER_ERROR_TRADING_DISABLED = 4;
+  // Торговля токеном не доступна конкретному пользователю (проверка параметра эмиссии offering_for)
+  ESTIMATE_ORDER_ERROR_OFFER_UNAVAILABLE_FOR_USER = 5;
+}

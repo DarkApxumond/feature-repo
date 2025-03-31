@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package atmz.trading.oms.enums;
+
+// Причина отмены торговой заявки
+enum CancellationReason {
+  CANCELLATION_REASON_UNSPECIFIED = 0;
+  // Техническая ошибка
+  CANCELLATION_REASON_INTERNAL_ERROR = 1;
+  // Бизнес ошибка: нет ответной торговой заявки в стакане
+  CANCELLATION_REASON_NO_MATCHING_ORDER = 2;
+  // Отменен пользователем
+  CANCELLATION_REASON_CANCEL_BY_USER = 3;
+  // Произошла ошибка во время записи сделки в ledger
+  CANCELLATION_REASON_HLF_WRITE_ERROR = 4;
+  // Заявка не была подхвачена матчером и отменена по таймауту
+  CANCELLATION_REASON_TIMEOUT = 5;
+  // У заявки истек срок действия
+  CANCELLATION_REASON_ORDER_EXPIRED = 6;
+}

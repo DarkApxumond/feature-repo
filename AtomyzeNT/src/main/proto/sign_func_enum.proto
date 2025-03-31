@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option go_package = "gitlab.atomyze.dev/atomyze-ru/chaincode/onchain/token/schema/common/sign";
+
+package atomyze.hlf.onchain.token.schema.common.sign;
+
+enum SignFunc {
+  SIGN_FUNC_UNSPECIFIED = 0;
+  SIGN_FUNC_GOST        = 1;
+  SIGN_FUNC_ED          = 2;
+}
